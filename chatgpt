@@ -1,0 +1,13 @@
+#!/bin/bash
+
+docker run -d --name chatgpt-api-single -e EMAIL=$CHATGPT_EMAIL -e PASSWORD=$CHATGPT_PASSWORD -p 4000:4000 -v ${PWD}/data:/app/data ghcr.io/bytemate/chatapi-single:main
+
+while [true]
+do
+read message
+curl -X "POST" "http://localhost:4000/message/mysession" \
+     -H 'Content-Type: application/json; charset=utf-8' \
+     -d $'{
+  "message": "$message"
+}'
+done
